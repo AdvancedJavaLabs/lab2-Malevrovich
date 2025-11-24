@@ -1,8 +1,8 @@
-#include "amqp_channel.hpp"
+#include "amqp/amqp_channel.hpp"
 
 #include <iostream>
 
-AMQPChannel::AMQPChannel(struct ev_loop* loop, const AMQP::Address& addr)
+lab2::AMQPChannel::AMQPChannel(struct ev_loop* loop, const AMQP::Address& addr)
     : loop_{loop},
       address_{addr},
       handler_{loop_},
