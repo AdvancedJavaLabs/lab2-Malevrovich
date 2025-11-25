@@ -36,8 +36,8 @@ std::optional<int> extractCorrelationID(const AMQP::Message& message, size_t par
 
 } // namespace
 
-Aggregator::Aggregator(TaskType task_type, Sink& sink)
-    : task_aggregator_{CreateTaskAggregator(task_type)},
+Aggregator::Aggregator(TaskType task_type, const std::string& task_arg, Sink& sink)
+    : task_aggregator_{CreateTaskAggregator(task_type, task_arg)},
       sink_{sink} {}
 
 void Aggregator::notifyPublished(uint32_t parts_count) {

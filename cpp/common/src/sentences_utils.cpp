@@ -14,7 +14,7 @@ void trim(std::string& str) {
 
 bool isEndOfSentenceBuffer(char current_char, char next_char, bool at_buffer_end,
                            std::istream& input) {
-    if (!isSentenceEndChar(current_char)) {
+    if (!lab2::isSentenceEndChar(current_char)) {
         return false;
     }
 
@@ -25,7 +25,7 @@ bool isEndOfSentenceBuffer(char current_char, char next_char, bool at_buffer_end
         next = input.peek();
     }
 
-    return isEndOfSentence(current_char, next);
+    return lab2::isEndOfSentence(current_char, next);
 }
 
 void addSentenceToChunk(std::string& chunk, std::string&& sentence,
@@ -42,9 +42,9 @@ void addSentenceToChunk(std::string& chunk, std::string&& sentence,
 
 } // namespace
 
-bool isSentenceEndChar(char c) { return c == '.' || c == '!' || c == '?'; }
+bool lab2::isSentenceEndChar(char c) { return c == '.' || c == '!' || c == '?'; }
 
-bool isEndOfSentence(char current_char, char next_char) {
+bool lab2::isEndOfSentence(char current_char, char next_char) {
     if (!isSentenceEndChar(current_char)) {
         return false;
     }
@@ -53,8 +53,8 @@ bool isEndOfSentence(char current_char, char next_char) {
            next_char == '\t' || next_char == '"' || next_char == '\'' || next_char == '\0';
 }
 
-void processTextByChunks(std::istream& input, std::function<void(const std::string&)> onChunk,
-                         size_t max_chunk_size) {
+void lab2::processTextByChunks(std::istream& input, std::function<void(const std::string&)> onChunk,
+                               size_t max_chunk_size) {
     std::string chunk;
     std::string sentence;
 
@@ -93,4 +93,18 @@ void processTextByChunks(std::istream& input, std::function<void(const std::stri
     if (!chunk.empty()) {
         onChunk(chunk);
     }
+}
+
+std::string lab2::normalizeWord(std::string_view word) {
+    std::string normalized;
+
+    normalized.reserve(word.length());
+
+    std::copy_if(word.begin(), word.end(), std::back_inserter(normalized),
+                 [](unsigned char c) { return std::isalnum(c) || c == '\'' || c == '-'; });
+
+    std::transform(normalized.begin(), normalized.end(), normalized.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+
+    return normalized;
 }

@@ -7,7 +7,7 @@
 
 namespace lab2 {
 
-enum class TaskType { WORD_CNT, TOP_N, MOOD, REPLACE, SORT };
+enum class TaskType { WORD_CNT, TOP_N, MOOD, NAME_REPLACE, SENTENCE_SORT };
 
 std::optional<TaskType> ParseTaskType(std::string_view task_type);
 
@@ -21,6 +21,7 @@ public:
     virtual ~TaskAggregator() = default;
 };
 
-std::shared_ptr<TaskAggregator> CreateTaskAggregator(TaskType task_type);
+std::shared_ptr<TaskAggregator> CreateTaskAggregator(TaskType task_type,
+                                                     const std::string& task_arg);
 
 } // namespace lab2

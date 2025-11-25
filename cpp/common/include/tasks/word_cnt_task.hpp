@@ -4,7 +4,9 @@
 #include <cstdint>
 #include <string>
 
-class WordCountTask : public lab2::TaskAggregator {
+namespace lab2 {
+
+class WordCountTask : public TaskAggregator {
 public:
     WordCountTask();
 
@@ -17,3 +19,5 @@ public:
 private:
     int word_cnt_;
 };
+
+} // namespace lab2

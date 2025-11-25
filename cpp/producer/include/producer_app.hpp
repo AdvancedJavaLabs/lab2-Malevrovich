@@ -23,9 +23,9 @@ public:
           amqp_{loop_, addr, [this]() { onChannelReady(); }},
           request_queue_{std::move(request_queue)},
           input_file_{std::move(input_file)},
-          producer_{task_type, std::move(task_arg)},
+          producer_{task_type, task_arg},
           sink_{amqp_, std::move(output_file)},
-          aggregator_{task_type, sink_},
+          aggregator_{task_type, task_arg, sink_},
           chunk_size_{chunk_size} {}
 
     void run() { ev_run(loop_); }

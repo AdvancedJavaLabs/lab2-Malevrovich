@@ -11,7 +11,7 @@ namespace lab2 {
 
 class Aggregator {
 public:
-    Aggregator(TaskType task_type, Sink& sink);
+    Aggregator(TaskType task_type, const std::string& task_arg, Sink& sink);
 
     void notifyPublished(uint32_t parts_count);
     void openSink();

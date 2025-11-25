@@ -5,45 +5,9 @@
 #include <iostream>
 #include <string>
 
+#include "serialization.hpp"
+
 namespace lab2 {
-
-namespace {
-
-constexpr std::string_view kMagic = "LAB2";
-constexpr char kDelimiter = '\n';
-
-void write_string(std::string& dest, const std::string& str) {
-    dest += std::to_string(str.size());
-    dest += kDelimiter;
-    dest += str;
-    dest += kDelimiter;
-}
-
-bool read_string(const std::string& src, std::string& str, size_t& offset) {
-    size_t size_end = src.find(kDelimiter, offset);
-    if (size_end == std::string::npos) {
-        return false;
-    }
-
-    std::string size_str = src.substr(offset, size_end - offset);
-    try {
-        size_t size = std::stoul(size_str);
-        offset = size_end + 1;
-
-        if (offset + size >= src.size()) {
-            return false;
-        }
-
-        str = src.substr(offset, size);
-        offset += size + 1;
-
-        return true;
-    } catch (const std::exception&) {
-        return false;
-    }
-}
-
-} // namespace
 
 std::string Message::serialize(const Message& src) {
     std::string result;
@@ -54,9 +18,9 @@ std::string Message::serialize(const Message& src) {
     result += std::to_string(static_cast<uint32_t>(src.task_type));
     result += kDelimiter;
 
-    write_string(result, src.task_arg);
+    WriteString(result, src.task_arg);
 
-    write_string(result, src.data);
+    WriteString(result, src.data);
 
     return result;
 }
@@ -83,13 +47,13 @@ std::optional<Message> Message::parse(const std::string& src) {
         offset = type_end + 1;
 
         std::string task_arg;
-        if (!read_string(src, task_arg, offset)) {
+        if (!ReadString(src, task_arg, offset)) {
             std::cerr << "Wrong format: cannot read task_arg" << std::endl;
             return std::nullopt;
         }
 
         std::string data;
-        if (!read_string(src, data, offset)) {
+        if (!ReadString(src, data, offset)) {
             std::cerr << "Wrong format: cannot read data" << std::endl;
             return std::nullopt;
         }
